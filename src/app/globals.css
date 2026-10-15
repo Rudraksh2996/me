@@ -1,26 +1,124 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/*
+ * Tailwind v4 is configured in CSS: these @theme tokens replace tailwind.config.ts
+ * and generate utilities like bg-ink, text-bone, text-ember, font-serif, font-display.
+ */
+@theme {
+  --color-ink: #050505;
+  --color-night: #0b0a0c;
+  --color-ash: #8a8580;
+  --color-smoke: #1a1819;
+  --color-bone: #f3efe8;
+  --color-ember: #c1121f;
+  --color-blood: #7a0a12;
+  --color-glow: #ff3b3b;
+
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-jp: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+
+  --ease-cine: cubic-bezier(0.76, 0, 0.24, 1);
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-bone);
+}
+
+/* Film grain over everything — sells the cinematic feel without an image asset. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -4%); }
+  60% { transform: translate(-4%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes scrollhint {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Masked line / word — the inner span slides up from below. No `display` here:
+   unlayered CSS beats Tailwind's layered utilities, so set inline-block/block in markup. */
+.reveal-mask {
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.reveal-mask > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+
+/* Afterlight equalizer — classes toggled by ScrollTrigger in Afterlight.tsx */
+.eq-col {
+  transform-origin: bottom;
+  transform: scaleY(0.55);
+  transition: transform 0.7s var(--ease-cine);
+}
+.eq-fill {
+  background: rgb(243 239 232 / 0.15);
+  transition: background-color 0.5s, box-shadow 0.5s;
+}
+.eq-bar.is-lit .eq-fill { background: rgb(193 18 31 / 0.7); }
+.eq-bar.is-active .eq-col { transform: scaleY(1); }
+.eq-bar.is-active .eq-fill { background: rgb(243 239 232 / 0.4); }
+.eq-bar.is-active.is-lit .eq-fill {
+  background: var(--color-glow);
+  box-shadow: 0 0 14px rgb(255 59 59 / 0.7);
+}
+.al-label.is-active { color: var(--color-bone); }
+
+.vertical-jp {
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp);
+}
+
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+html.is-loading {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain::after { animation: none; }
 }
