@@ -1,0 +1,4 @@
+* text=auto eol=lf
+vendor/threeui/* -text
+public/landing-pages/kibori-assets/* -text
+*.pdf -text
