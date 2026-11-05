@@ -102,7 +102,7 @@ document.addEventListener('click', e => {
   const button = e.target.closest?.('[data-inspect]');
   if (!button) return;
   const entry = INSPECTABLE.find(item => item.station === Number(button.dataset.inspect));
-  if (entry) { inspectOpen(entry); }
+  if (entry) { inspectOpen(entry); INS.returnFocus = button; }
 });
 document.addEventListener('keydown', e => {
   if (!INS.open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
@@ -112,10 +112,20 @@ document.addEventListener('keydown', e => {
 });
 inspectEl.setAttribute('aria-label', 'Interactive craft. Use arrow keys to turn; Escape to close.');
 inspectEl.querySelector('.h span').textContent = 'Drag or use arrow keys to turn';
+new MutationObserver(() => {
+  if (!chromeEl.classList.contains('inspecting') && INS.portfolioRestore) {
+    INS.portfolioRestore = false;
+    requestAnimationFrame(() => {
+      const origin = INS.returnFocus?.matches?.('[data-inspect],a') ? INS.returnFocus : null;
+      const target = origin || document.querySelector('#ch' + TV.i + ' [data-inspect]');
+      target?.focus({preventScroll:true});
+    });
+  }
+}).observe(chromeEl, {attributes:true, attributeFilter:['class']});
 ` + html.slice(scriptEnd);
 replace("  INS.entry = e; INS.open = true;", "  INS.returnFocus = document.activeElement;\n  INS.entry = e; INS.open = true;");
 replace("  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');", "  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');\n  inspectEl.querySelector('button').focus({preventScroll:true});");
-replace("  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');", "  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');\n  const returnTo = INS.returnFocus?.matches?.('button,a') ? INS.returnFocus : document.querySelector('#ch' + TV.i + ' [data-inspect]');\n  returnTo?.focus({preventScroll:true});");
+replace("  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');", "  INS.portfolioRestore = inspectEl.contains(document.activeElement);\n  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');");
 mkdirSync('public/landing-pages', {recursive:true});
 writeFileSync('public/landing-pages/kibori.html', html);
 copyFileSync('node_modules/three/build/three.module.min.js', 'public/landing-pages/three.module.min.js');
