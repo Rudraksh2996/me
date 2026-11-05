@@ -14,6 +14,18 @@ Pristine inputs are retained byte-for-byte in vendor/threeui; the portfolio HTML
 
 The current HTML is 1,160,839 bytes; bundle metadata reports 1,158,749 bytes. Component and CSS still match their original hashes.
 
+## Adapted application files
+
+The table above identifies the pristine inputs. The application uses these derived versions; deliberate changes are listed in DEVIATIONS.md.
+
+| File | Original expected SHA-256 | Final SHA-256 used |
+| --- | --- | --- |
+| `public/landing-pages/kibori.html` (generated) | `81d3014c0d164775817d6f77b0641199f3ccc5d7d10f861e1d9192a7a0c7cf8e` | `0754dddf30fe9b9bcac5ec0bbdf32b2ac88e17b694e2a72d45d7cef570c9fce6` |
+| `src/shaders/kibori-landing-page/KiboriLandingPage.tsx` | `0983b92f333f22eb2799f437ff1b71121b6c398285c3249451618d2ff7298bd4` | `27c915981fc6f310ed62645a334ed6629eb4164e16a79052dd5e88dbc34f1720` |
+| `vendor/threeui/threeui.css` (imported unchanged) | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` |
+
+These final hashes are also recorded by the build in generated-source.json. The baseline HTML hash remains the explicitly authorized `409e541b…5c38`; content adaptation accounts for the generated HTML's different hash.
+
 ## Registered assets
 
 All 17 files match both the original prompt and registered metadata, including byte lengths.
