@@ -31,6 +31,17 @@ const kanji = ['組子','青海波','木組','焼杉','鑿','漆','指物','鉋'
 // This authored copy update counts wood strips, not portfolio facts.
 replace("document.querySelector('.chapter .meta').querySelectorAll('b')[1].textContent=kumikoLattice.count.toLocaleString();", '// Portfolio metadata is supplied by portfolio-data.json; retain it unchanged.');
 // Only the chapter copy changes; all authored chapter containers and poses remain.
+// Preserve the same point in the scroll-linked story on rotation or window resize.
+replace('function resize(){\n  const {w,h} = viewport();', `function resize(){
+  const {w,h} = viewport();
+  if (sized && (w !== VW || h !== VH)) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo(0, Math.max(0, max) * S.sp);
+  }`);
+// Portfolio type responds to height as well as width; remeasure both dimensions.
+replace('let splitW = -1;', 'let splitW = -1, splitH = window.innerHeight;');
+replace('if (splitW < 0 || window.innerWidth === splitW) return;', 'if (splitW < 0 || (window.innerWidth === splitW && window.innerHeight === splitH)) return;');
+replace('    splitW = window.innerWidth;', '    splitW = window.innerWidth; splitH = window.innerHeight;');
 for (const [i, chapter] of data.chapters.entries()) {
   const project = data.projects.find(p => p.id === chapter.project);
   const re = new RegExp(`(<div class="chapter[^"\\n]*" id="ch${i}">)[\\s\\S]*?(?=\\n  </div>)`);
@@ -130,6 +141,6 @@ mkdirSync('public/landing-pages', {recursive:true});
 writeFileSync('public/landing-pages/kibori.html', html);
 copyFileSync('node_modules/three/build/three.module.min.js', 'public/landing-pages/three.module.min.js');
 const sha = value => createHash('sha256').update(value).digest('hex');
-const manifest = { canonical: sha(readFileSync('vendor/threeui/kibori.html')), adaptedHtml: sha(html), component: sha(readFileSync('src/shaders/kibori-landing-page/KiboriLandingPage.tsx')), sharedCss: sha(readFileSync('vendor/threeui/threeui.css')), data: sha(readFileSync('src/portfolio-data.json')), three: sha(readFileSync('public/landing-pages/three.module.min.js')) };
+const manifest = { canonical: sha(readFileSync('vendor/threeui/kibori.html')), adaptedHtml: sha(html), component: sha(readFileSync('src/shaders/kibori-landing-page/KiboriLandingPage.tsx')), sharedCss: sha(readFileSync('vendor/threeui/threeui.css')), portfolioCss: sha(readFileSync('public/landing-pages/portfolio.css')), shellCss: sha(readFileSync('src/style.css')), data: sha(readFileSync('src/portfolio-data.json')), three: sha(readFileSync('public/landing-pages/three.module.min.js')) };
 writeFileSync('docs/generated-source.json', JSON.stringify(manifest,null,2)+'\n');
 console.log('Adapted HTML SHA-256:', manifest.adaptedHtml);
