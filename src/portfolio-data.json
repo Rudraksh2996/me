@@ -1,0 +1,39 @@
+{
+  "name": "Rudraksh Sharma",
+  "role": "Aspiring Web Developer · Python Enthusiast · B.Tech IT",
+  "bio": "B.Tech Information Technology student with a foundation in Python, web development, and AWS cloud fundamentals. Exploring Agentic AI and building thoughtful software, one project at a time.",
+  "location": "Ghaziabad, Uttar Pradesh, India",
+  "email": "sharmarudraksh840@gmail.com",
+  "phone": "8958190156",
+  "education": "B.Tech in Information Technology · 2024–2028",
+  "experience": "Professional experience: not provided. Explore my project work below.",
+  "socials": [
+    {"label": "GitHub", "url": "https://github.com/Rudraksh2996"},
+    {"label": "LinkedIn", "url": "https://www.linkedin.com/in/rudraksh2996/"},
+    {"label": "LeetCode", "url": "https://leetcode.com/u/Rudraksh_29/"}
+  ],
+  "skills": [
+    {"category": "Frontend & UI", "items": ["HTML5", "CSS3", "JavaScript", "React.js", "Framer Motion"]},
+    {"category": "Backend & Core", "items": ["Python", "JSON", "Rich CLI", "Data Structures", "OOP"]},
+    {"category": "Cloud & Infrastructure", "items": ["AWS", "Cloud Operations", "Cloud Foundations"]},
+    {"category": "Tools & Ecosystem", "items": ["Git", "GitHub", "VS Code", "Problem Solving"]}
+  ],
+  "certifications": ["AWS Certified CloudOps Engineer – Associate", "AWS Cloud Foundations Certificate"],
+  "coursework": ["Data Structures & Algorithms", "Object-Oriented Programming", "Database Management Systems", "Operating Systems", "Computer Networks", "Introduction to AI/ML", "Linear Algebra", "Probability & Statistics"],
+  "projects": [
+    {"id": "guardauth", "title": "GuardAuth CLI Authentication System", "description": "A terminal authentication system with a three-tier architecture, PBKDF2-HMAC-SHA256 password hashing, unique salts, constant-time comparison, dependency injection, and the Repository Pattern.", "tags": ["Python", "Rich", "hashlib", "JSON"], "url": "https://github.com/Rudraksh2996/AuthenticationSystem"},
+    {"id": "expenses", "title": "Expense Tracker", "description": "A terminal-based Python expense tracker with interactive menus, spending analytics, text graphs, category breakdowns, and persistent JSON storage.", "tags": ["Python", "JSON", "CLI"], "url": "https://github.com/Rudraksh2996/Expense-Tracker"},
+    {"id": "zru", "title": "Zru Studios Landing Page", "description": "An interactive React landing page with glassmorphism, a custom useTilt hook, physics-based Framer Motion animation, and scroll-triggered lazy loading.", "tags": ["React.js", "Framer Motion", "JavaScript"], "url": "https://github.com/Rudraksh2996/zru-studios-landing"}
+  ],
+  "chapters": [
+    {"project": "guardauth", "title": "GuardAuth", "label": "GuardAuth · Architecture", "description": "Three clear layers: presentation, business logic, and data access. A Python authentication system built around separation of concerns.", "meta": [["Language", "Python"], ["Interface", "Rich CLI"], ["Architecture", "Three tiers"]]},
+    {"project": "guardauth", "title": "Security", "label": "GuardAuth · Passwords", "description": "PBKDF2-HMAC-SHA256, unique 32-byte salts, and constant-time comparison. A closer look at the same GuardAuth project.", "meta": [["Hashing", "PBKDF2"], ["Salts", "32 bytes"], ["Comparison", "Constant-time"]]},
+    {"project": "guardauth", "title": "Structure", "label": "GuardAuth · Design", "description": "Dependency injection and the Repository Pattern keep storage separate from core services. The third chapter of GuardAuth.", "meta": [["Pattern", "Repository"], ["Design", "Dependency injection"], ["Storage", "JSON"]]},
+    {"project": "expenses", "title": "Expenses", "label": "Expense Tracker · Overview", "description": "A terminal-based expense tracker in Python. Interactive menus make everyday spending easier to record and explore.", "meta": [["Language", "Python"], ["Interface", "Terminal"], ["Storage", "JSON"]]},
+    {"project": "expenses", "title": "Insight", "label": "Expense Tracker · Analytics", "description": "Spending analytics, visual text graphs, and category breakdowns bring the same Expense Tracker project into focus.", "meta": [["Analytics", "Spending"], ["Graphs", "Text-based"], ["Grouping", "Categories"]]},
+    {"project": "zru", "title": "Zru Studios", "label": "Zru Studios · Interface", "description": "An interactive landing page shaped by glassmorphism and state-driven micro-interactions. Built with React and Framer Motion.", "meta": [["Framework", "React.js"], ["Motion", "Framer Motion"], ["Language", "JavaScript"]]},
+    {"project": "zru", "title": "Motion", "label": "Zru Studios · Interaction", "description": "A custom useTilt hook brings physics-based 3D card manipulation to the same Zru Studios landing page.", "meta": [["Hook", "useTilt"], ["Physics", "useSpring"], ["State", "useMotionValue"]]},
+    {"project": "zru", "title": "Performance", "label": "Zru Studios · Rendering", "description": "Scroll-triggered lazy loading with useInView. The final chapter explores rendering choices in Zru Studios.", "meta": [["Visibility", "useInView"], ["Loading", "Scroll-triggered"], ["Components", "Reusable UI"]]}
+  ],
+  "gaps": ["Employment history and testimonials not provided", "Certification dates and verification links not provided", "Project screenshots and live demo URLs not provided", "Current internship availability needs confirmation; the source mentions Summer 2026", "Institution omitted in newer website copy; resume still names KIET"]
+}
