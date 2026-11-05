@@ -25,8 +25,11 @@ replace('>The crafts</a>', '>Projects</a>');
 replace('>Atelier</a>', '>About / Skills</a>');
 replace('>Commission</a>', '>Get in touch</a>');
 replace('<span class="lk-word">KIBORI</span>', '<span class="lk-word">RUDRAKSH</span>');
+replace('<span class="lk-word">RUDRAKSH</span>', '<span class="lk-word" role="heading" aria-level="1" aria-label="Rudraksh Sharma">RUDRAKSH</span>');
 replace('Eight crafts of a Kyoto woodshop, each made to order', escape(data.role));
 const kanji = ['組子','青海波','木組','焼杉','鑿','漆','指物','鉋'];
+// This authored copy update counts wood strips, not portfolio facts.
+replace("document.querySelector('.chapter .meta').querySelectorAll('b')[1].textContent=kumikoLattice.count.toLocaleString();", '// Portfolio metadata is supplied by portfolio-data.json; retain it unchanged.');
 // Only the chapter copy changes; all authored chapter containers and poses remain.
 for (const [i, chapter] of data.chapters.entries()) {
   const project = data.projects.find(p => p.id === chapter.project);
@@ -95,12 +98,11 @@ replace('  roots = (roots || []).filter(Boolean);', `  const chapter = ${JSON.st
 const scriptEnd = html.lastIndexOf('</script>');
 html = html.slice(0,scriptEnd) + `
 // Portfolio accessibility adapter. Authored scene, raycasting, and drag behavior are retained.
-let portfolioReturnFocus = null;
 document.addEventListener('click', e => {
   const button = e.target.closest?.('[data-inspect]');
   if (!button) return;
   const entry = INSPECTABLE.find(item => item.station === Number(button.dataset.inspect));
-  if (entry) { portfolioReturnFocus = button; inspectOpen(entry); inspectEl.querySelector('button').focus({preventScroll:true}); }
+  if (entry) { inspectOpen(entry); }
 });
 document.addEventListener('keydown', e => {
   if (!INS.open || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
@@ -108,14 +110,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); INS.yaw += e.key === 'ArrowLeft' ? -0.15 : 0.15; INS.vy = 0; }
   if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); INS.pitch += e.key === 'ArrowUp' ? -0.1 : 0.1; INS.vp = 0; }
 });
-new MutationObserver(() => {
-  if (inspectEl.getAttribute('aria-hidden') === 'true' && portfolioReturnFocus) {
-    portfolioReturnFocus.focus({preventScroll:true}); portfolioReturnFocus = null;
-  }
-}).observe(inspectEl, {attributes:true, attributeFilter:['aria-hidden']});
 inspectEl.setAttribute('aria-label', 'Interactive craft. Use arrow keys to turn; Escape to close.');
 inspectEl.querySelector('.h span').textContent = 'Drag or use arrow keys to turn';
 ` + html.slice(scriptEnd);
+replace("  INS.entry = e; INS.open = true;", "  INS.returnFocus = document.activeElement;\n  INS.entry = e; INS.open = true;");
+replace("  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');", "  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');\n  inspectEl.querySelector('button').focus({preventScroll:true});");
+replace("  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');", "  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');\n  const returnTo = INS.returnFocus?.matches?.('button,a') ? INS.returnFocus : document.querySelector('#ch' + TV.i + ' [data-inspect]');\n  returnTo?.focus({preventScroll:true});");
 mkdirSync('public/landing-pages', {recursive:true});
 writeFileSync('public/landing-pages/kibori.html', html);
 copyFileSync('node_modules/three/build/three.module.min.js', 'public/landing-pages/three.module.min.js');
