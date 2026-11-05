@@ -36,6 +36,7 @@ The production app is in `dist/`, which is intentionally ignored. Build scripts 
 - [Content provenance and gaps](docs/CONTENT.md)
 - [Every source deviation](docs/DEVIATIONS.md)
 - [Verification results](docs/VERIFICATION.md)
+- [Responsive layouts and browser viewport matrix](docs/RESPONSIVE.md)
 
 Pinned revision unavailable; current canonical source used with user authorization. The JSON bundle contains inline TSX/CSS and a canonical HTML URL, but its HTML hash is stale. All 17 original asset hashes match.
 

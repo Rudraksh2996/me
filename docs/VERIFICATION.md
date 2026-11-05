@@ -1,5 +1,7 @@
 # Verification — 2026-11-05
 
+Responsive follow-up: see [RESPONSIVE.md](RESPONSIVE.md) and [the 14-size browser measurement matrix](responsive-matrix.json) for the later 240–3440px layout work, including short-screen scrolling and orientation continuity. Build, lint, type check, original source/asset verification, and whitespace checks were rerun for this follow-up.
+
 ## Source integrity
 
 - Fresh JSON bundle obtained from the requested URL. It contains no inline HTML; its sourceUrl points to the canonical HTML. The canonical HTML was independently fetched twice and both downloads match the user-authorized `409e541be1ada6f3e99ef0cb8b990550cd2b2dd01a3452753c28b1c954245c38`.

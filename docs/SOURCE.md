@@ -20,7 +20,7 @@ The table above identifies the pristine inputs. The application uses these deriv
 
 | File | Original expected SHA-256 | Final SHA-256 used |
 | --- | --- | --- |
-| `public/landing-pages/kibori.html` (generated) | `81d3014c0d164775817d6f77b0641199f3ccc5d7d10f861e1d9192a7a0c7cf8e` | `0754dddf30fe9b9bcac5ec0bbdf32b2ac88e17b694e2a72d45d7cef570c9fce6` |
+| `public/landing-pages/kibori.html` (generated) | `81d3014c0d164775817d6f77b0641199f3ccc5d7d10f861e1d9192a7a0c7cf8e` | `8c49d9b32828e157a717c41db33b2da148397adcfc90e78c6e62ee8b403ca85c` |
 | `src/shaders/kibori-landing-page/KiboriLandingPage.tsx` | `0983b92f333f22eb2799f437ff1b71121b6c398285c3249451618d2ff7298bd4` | `27c915981fc6f310ed62645a334ed6629eb4164e16a79052dd5e88dbc34f1720` |
 | `vendor/threeui/threeui.css` (imported unchanged) | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` |
 
