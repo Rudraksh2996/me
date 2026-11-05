@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.local
+*.log
+public/landing-pages/kibori.html
+public/landing-pages/portfolio-data.json
+public/landing-pages/three.module.min.js
