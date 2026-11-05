@@ -1,0 +1,1 @@
+{"buildCommand":"npm run build","outputDirectory":"dist","headers":[{"source":"/landing-pages/(.*)","headers":[{"key":"Access-Control-Allow-Origin","value":"*"}]}]}
