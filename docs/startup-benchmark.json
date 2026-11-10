@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-11",
+  "browser": "Codex in-app Chromium",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "build": "production Vite preview",
+  "scope": "Early inline scene script to real loader removal; excludes initial request/React shell and end of reveal animation.",
+  "caveats": [
+    "One observation per mode",
+    "Full warm-up ran first, on-demand second",
+    "Browser/GPU caches were not cleared",
+    "Not a cold-cache or cross-device guarantee"
+  ],
+  "baseline": {
+    "mode": "full",
+    "sceneBuildMs": 46755,
+    "prewarmMs": 113703,
+    "firstFrameAndRevealMs": 2040,
+    "totalMs": 162498
+  },
+  "optimized": {
+    "mode": "on-demand",
+    "sceneBuildMs": 41916,
+    "prewarmMs": 0,
+    "firstFrameAndRevealMs": 19869,
+    "totalMs": 61784
+  },
+  "reductionMs": 100714,
+  "reductionPercent": 62,
+  "mobileHost": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "mode": "on-demand",
+    "sceneBuildMs": 36276,
+    "prewarmMs": 0,
+    "firstFrameAndRevealMs": 24406,
+    "totalMs": 60683
+  },
+  "visibilityProbe": {
+    "hidden": false,
+    "iframes": 1,
+    "state": "ready",
+    "timingUnchanged": true,
+    "limitation": "In-app tab switch did not report document.hidden=true; hidden host state is covered by regression tests."
+  }
+}

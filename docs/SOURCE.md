@@ -20,8 +20,8 @@ The table above identifies the pristine inputs. The application uses these deriv
 
 | File | Original expected SHA-256 | Final SHA-256 used |
 | --- | --- | --- |
-| `public/landing-pages/kibori.html` (generated) | `81d3014c0d164775817d6f77b0641199f3ccc5d7d10f861e1d9192a7a0c7cf8e` | `8c49d9b32828e157a717c41db33b2da148397adcfc90e78c6e62ee8b403ca85c` |
-| `src/shaders/kibori-landing-page/KiboriLandingPage.tsx` | `0983b92f333f22eb2799f437ff1b71121b6c398285c3249451618d2ff7298bd4` | `27c915981fc6f310ed62645a334ed6629eb4164e16a79052dd5e88dbc34f1720` |
+| `public/landing-pages/kibori.html` (generated) | `81d3014c0d164775817d6f77b0641199f3ccc5d7d10f861e1d9192a7a0c7cf8e` | `0d0d47b3b35388e6854ee04fec8b0b068fe72418fc2bfdaa847bdaf853414f0b` |
+| `src/shaders/kibori-landing-page/KiboriLandingPage.tsx` | `0983b92f333f22eb2799f437ff1b71121b6c398285c3249451618d2ff7298bd4` | `ea033b1b31742ecbb3576a5b43208c68176b5bb4b691708fc6921d7c5d1cf5e9` |
 | `vendor/threeui/threeui.css` (imported unchanged) | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` | `efe4447139f1358dd8e9be68edf6fa46cbefbd1de423a4d6c439ca61d2c8eccf` |
 
 These final hashes are also recorded by the build in generated-source.json. The baseline HTML hash remains the explicitly authorized `409e541b…5c38`; content adaptation accounts for the generated HTML's different hash.

@@ -8,7 +8,7 @@ The portfolio belongs to **Rudraksh Sharma**, a B.Tech Information Technology st
 
 **Content source:** [Rudraksh2996/Portfolio](https://github.com/Rudraksh2996/Portfolio)
 
-**Documentation updated:** November 6, 2026
+**Documentation updated:** November 11, 2026
 
 ## Contents
 
@@ -126,7 +126,7 @@ flowchart TD
 
 `src/main.tsx` imports the adapted `KiboriLandingPage` component, the exact shared ThreeUI stylesheet, and the shell CSS. The component loads `/landing-pages/kibori.html` in an iframe that fills the viewport.
 
-The host uses `IntersectionObserver` and the document visibility API. When the host leaves its visibility range or the document becomes hidden, the iframe is unmounted. When it becomes visible again, it is mounted again. This can restart the scene and its loading sequence; application state is not persisted across that remount.
+The host uses `IntersectionObserver` and the document visibility API. Leaving its intersection range can still unmount the iframe and restart it on return. Simply hiding the browser tab now retains the mounted iframe, avoiding a second scene build and kindling sequence when the visitor switches back. The browser handles hidden-frame throttling; document visibility still updates the host's paused indicator. State is not persisted across an actual iframe remount or page reload.
 
 The host’s `data-state` reports `loading`, `ready`, or `paused`. “Ready” reflects the iframe load event; the authored scene has its own fire loader and shader warm-up, so that attribute is not a guarantee that all GPU preparation has finished.
 
@@ -161,6 +161,9 @@ The preparation script reads the preserved source and portfolio data, verifies t
 │   └── resume.pdf                 # Unchanged historical source resume
 ├── scripts/
 │   ├── prepare-portfolio.mjs       # Verify inputs and generate scene document
+│   ├── startup-adapter.mjs         # Remove all-workshop warm-up from normal entry
+│   ├── startup-adapter.test.mjs    # Startup scheduling/diagnostic regressions
+│   ├── portfolio-host.test.mjs     # Visible/hidden iframe host regressions
 │   └── verify-source.mjs           # Verify pristine source and registered assets
 ├── src/
 │   ├── shaders/kibori-landing-page/
@@ -246,6 +249,7 @@ Run every command from the repository root; preparation and verification use pat
 | `npm ci` | Install the exact locked dependency tree | Deploy or generate a production build |
 | `npm run dev` | Verify inputs, prepare scene files, then start Vite | Continuously rerun the preparation script on every data edit |
 | `npm run verify:source` | Check pristine registered files and all 17 asset hashes/lengths | Check browser interactions or compare against a newly downloaded upstream revision |
+| `npm run test:startup` | Test on-demand startup, explicit full warm-up, failure handling, and readiness diagnostics | Render the scene or benchmark a GPU |
 | `npm run typecheck` | Run TypeScript with `--noEmit` | Validate the embedded HTML/GLSL or every portfolio JSON relationship |
 | `npm run lint` | Lint `src`, `scripts`, and `vite.config.ts` | Lint the preserved vendor source or generated public HTML |
 | `npm run build` | Verify, prepare, type-check, and build into `dist/` | Run ESLint or deploy the build |
@@ -259,7 +263,7 @@ To prepare the scene without starting Vite, use the existing script directly:
 node scripts/prepare-portfolio.mjs
 ```
 
-There is no `npm test` command, browser-automation suite, continuous-integration workflow, or deployment workflow configured in this repository. The browser matrix is a recorded verification artifact, not an executable test suite.
+The targeted startup tests run with `npm run test:startup` using Node's built-in test runner. There is no general `npm test` command, browser-automation suite, continuous-integration workflow, or deployment workflow configured in this repository. The browser matrix is a recorded verification artifact, not an executable test suite.
 
 ## Build pipeline and generated files
 
@@ -271,7 +275,7 @@ There is no `npm test` command, browser-automation suite, continuous-integration
 4. Read the pristine canonical HTML from `vendor/threeui/kibori.html`.
 5. Replace personal copy, project chapters, English inspector labels, contact details, and finale content.
 6. Map upstream asset URLs to the local registered files and Three.js to its local npm module.
-7. Apply isolated accessibility and resize-continuity adaptations.
+7. Apply isolated accessibility, resize-continuity, and on-demand startup adaptations.
 8. Write `public/landing-pages/kibori.html` and copy `three.module.min.js` from `node_modules/three/build/`.
 9. Refresh `docs/generated-source.json` with SHA-256 values for pristine and adapted sources, data, styles, and the local Three.js module.
 10. Run TypeScript checks and let Vite build the application into `dist/`.
@@ -506,6 +510,7 @@ After assigning a public domain, use an absolute Open Graph image URL if the tar
 npm run verify:source
 npm run lint
 npm run typecheck
+npm run test:startup
 npm run build
 git diff --check
 ```
@@ -538,11 +543,17 @@ After a functional or layout change, allow initialization to finish, then check 
 
 ## Performance and browser limitations
 
-The source is an unusually substantial visual scene rather than a conventional text-first portfolio. It prepares geometry, shader programs, buffers, shadows, and post-processing resources before revealing the workshop. First-load warm-up can take minutes in an embedded or software-rendered browser.
+The source is an unusually substantial visual scene rather than a conventional text-first portfolio. It builds scene geometry before opening and compiles the materials needed for actual rendered frames. Initialization remains dependent on the CPU, GPU, browser, and connection.
+
+The normal entry no longer waits for the original complete-workshop preparation: that path compiled every material and rendered three poses at every station into two targets (48 off-screen scene renders). Later materials now compile when the renderer first needs them. The kindling animation and authored reveal still run; the change removes preparation work rather than merely hiding an unfinished scene. A first visit to a later craft or shader effect can therefore incur a compilation hitch.
+
+For comparison or troubleshooting, open the scene document directly with `?warmup=full`, for example `http://127.0.0.1:4173/landing-pages/kibori.html?warmup=full` when using the production preview on its default port. This retains the original complete-workshop preparation. Adding that query to the outer React URL does not forward it into the iframe.
+
+The scene records local startup diagnostics in `document.documentElement.dataset.startupTiming` after the loader is removed. Its `sceneBuildMs`, `prewarmMs`, `firstFrameAndRevealMs`, and `totalMs` measure from an early inline scene script, not the entire network navigation or a standardized web-vitals metric. No timing is sent over the network. See [PERFORMANCE.md](docs/PERFORMANCE.md) for measurements and limitations.
 
 The upstream renderer adapts allocations to viewport size, caps its render-target dimensions/pixel budget, and adjusts multisampling on large targets. The portfolio preserves those authored quality controls and shaders; it does not claim a measured frame-rate target on every GPU.
 
-The verified scene’s fonts, SVGs, WebP artwork, and exact Three.js module are served locally after building. The visitor does not need to fetch those resources from the upstream Supabase or unpkg URLs. Installation still requires npm access, and optional external links open their respective destinations.
+The verified scene’s fonts, SVGs, WebP artwork, and exact Three.js module are served locally after building. The visitor does not need to fetch those resources from the upstream Supabase or unpkg URLs. Vercel is configured to cache the unchanged registered assets for one year with `immutable`; HTML and the unversioned Three.js module do not receive that immutable policy. Installation still requires npm access, and optional external links open their respective destinations.
 
 Known observations from verification:
 
@@ -568,7 +579,7 @@ Known observations from verification:
 | Works at `/` but fails at `/me/` | The application still has root-relative URLs; complete the subpath adaptations described above. |
 | Mail draft does not open | Configure a default email handler or use the direct email address. The site has no server-side mail delivery. |
 | Physical phone cannot reach localhost | Loopback points to that phone, not the development computer. Use an intentional LAN binding/address and check network/firewall access. |
-| Scene restarts after changing tabs | The host unmounts its iframe when the document becomes hidden; this lifecycle is expected. |
+| Scene restarts after returning | A full reload or host intersection unmount restarts the scene. A browser-tab visibility change alone now retains the iframe; inspect lifecycle/context errors if that still causes a restart. |
 | Scrollable chapter copy appears on a short display | This is intentional so lower actions remain reachable. Scroll within the copy, or use the uncovered scene area to move through the story. |
 
 ## Maintenance and contribution workflow

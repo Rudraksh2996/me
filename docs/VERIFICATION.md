@@ -1,5 +1,7 @@
 # Verification — 2026-11-05
 
+Startup follow-up (2026-11-11): [PERFORMANCE.md](PERFORMANCE.md) records the later on-demand startup change and local timing comparison. The earlier full-warm-up observations below describe the original behavior, not the current default. Startup regression tests, lint, type checks, build, and source/asset integrity checks were rerun for the follow-up.
+
 Responsive follow-up: see [RESPONSIVE.md](RESPONSIVE.md) and [the 14-size browser measurement matrix](responsive-matrix.json) for the later 240–3440px layout work, including short-screen scrolling and orientation continuity. Build, lint, type check, original source/asset verification, and whitespace checks were rerun for this follow-up.
 
 ## Source integrity
