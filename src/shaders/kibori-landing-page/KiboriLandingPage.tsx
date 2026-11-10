@@ -23,11 +23,13 @@ export function KiboriLandingPage({ className = "", style }: KiboriLandingPagePr
     return () => document.removeEventListener("visibilitychange", update);
   }, []);
 
-  const mounted = hostVisible && documentVisible;
+  // Hiding the browser tab must not discard the entire workshop and replay
+  // construction/kindling on return. The browser throttles the hidden iframe.
+  const mounted = hostVisible;
   useEffect(() => setReady(false), [mounted]);
 
   return (
-    <div ref={hostRef} className={`threeui-background kibori-landing-page${className ? ` ${className}` : ""}`} role="group" aria-label="Rudraksh Sharma interactive portfolio" data-state={!mounted ? "paused" : ready ? "ready" : "loading"} style={{ position: "relative", overflow: "hidden", background: "#0a0806", pointerEvents: "auto", ...style }}>
+    <div ref={hostRef} className={`threeui-background kibori-landing-page${className ? ` ${className}` : ""}`} role="group" aria-label="Rudraksh Sharma interactive portfolio" data-state={!mounted || !documentVisible ? "paused" : ready ? "ready" : "loading"} style={{ position: "relative", overflow: "hidden", background: "#0a0806", pointerEvents: "auto", ...style }}>
       {mounted ? (
         <iframe title="Rudraksh Sharma — interactive portfolio" src="/landing-pages/kibori.html" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-downloads" loading="eager" onLoad={() => setReady(true)} style={{ position: "absolute", inset: 0, display: "block", width: "100%", height: "100%", border: 0, background: "#0a0806", opacity: ready ? 1 : 0, pointerEvents: ready ? "auto" : "none", transition: "opacity 240ms ease-out" }} />
       ) : null}

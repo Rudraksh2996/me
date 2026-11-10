@@ -2,6 +2,7 @@
 import './verify-source.mjs';
 import { readFileSync, writeFileSync, copyFileSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { adaptStartup } from './startup-adapter.mjs';
 const data = JSON.parse(readFileSync('src/portfolio-data.json', 'utf8'));
 const bundle = JSON.parse(readFileSync('vendor/threeui/source-bundle.json', 'utf8'));
 const escape = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -137,6 +138,7 @@ new MutationObserver(() => {
 replace("  INS.entry = e; INS.open = true;", "  INS.returnFocus = document.activeElement;\n  INS.entry = e; INS.open = true;");
 replace("  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');", "  inspectEl.classList.add('on'); inspectEl.setAttribute('aria-hidden', 'false');\n  inspectEl.querySelector('button').focus({preventScroll:true});");
 replace("  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');", "  INS.portfolioRestore = inspectEl.contains(document.activeElement);\n  inspectEl.classList.remove('on'); inspectEl.setAttribute('aria-hidden', 'true');");
+html = adaptStartup(html);
 mkdirSync('public/landing-pages', {recursive:true});
 writeFileSync('public/landing-pages/kibori.html', html);
 copyFileSync('node_modules/three/build/three.module.min.js', 'public/landing-pages/three.module.min.js');
